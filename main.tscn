@@ -1,0 +1,68 @@
+[gd_scene load_steps=11 format=3 uid="uid://ba6ymot17al25"]
+
+[ext_resource type="Script" path="res://main.gd" id="1_t5a0a"]
+[ext_resource type="PackedScene" uid="uid://xys6nqd4m6oe" path="res://player.tscn" id="2_u86a6"]
+[ext_resource type="Texture2D" uid="uid://bwhibmrhvdsg2" path="res://assets/icon.svg" id="3_ev4yo"]
+[ext_resource type="Script" path="res://mob.gd" id="4_anxel"]
+[ext_resource type="Texture2D" uid="uid://n3q4a6yfm1ll" path="res://assets/goblin.jpg" id="5_iuunv"]
+[ext_resource type="Texture2D" uid="uid://b8s7mfbm60blx" path="res://assets/goblin2.jpg" id="6_6yt8a"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_afop2"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nrpc6"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_ev4yo")
+}, {
+"duration": 1.0,
+"texture": SubResource("CompressedTexture2D_afop2")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_qhnt8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("5_iuunv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6yt8a")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 1.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bxr3w"]
+
+[node name="Hack-N-Slash" type="Node"]
+script = ExtResource("1_t5a0a")
+
+[node name="Player" parent="." instance=ExtResource("2_u86a6")]
+position = Vector2(207, 259)
+
+[node name="AnimatedSpriteD2" type="AnimatedSprite2D" parent="Player"]
+skew = 0.150098
+sprite_frames = SubResource("SpriteFrames_nrpc6")
+frame_progress = 0.385529
+
+[node name="Mob" type="RigidBody2D" parent="."]
+collision_mask = 0
+gravity_scale = 0.0
+script = ExtResource("4_anxel")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Mob"]
+sprite_frames = SubResource("SpriteFrames_qhnt8")
+animation = &"idle"
+frame_progress = 0.342151
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mob"]
+shape = SubResource("RectangleShape2D_bxr3w")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="Mob"]
+
+[connection signal="body_entered" from="Player" to="Player" method="_on_body_entered"]
